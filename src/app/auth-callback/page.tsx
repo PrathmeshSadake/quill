@@ -16,8 +16,10 @@ const AuthCallback = () => {
         router.push(origin ? `/${origin}` : "/dashboard");
       }
     },
+
     onError: (err) => {
-      if (err.data?.code === "UNAUTHORIZED") {
+      console.log("ERROR:", err);
+      if (err.data?.code == "UNAUTHORIZED") {
         router.push("/sign-in");
       }
     },
