@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { Loader2 } from "lucide-react";
 import { trpc } from "../_trpc/client";
 
@@ -8,6 +9,11 @@ const AuthCallback = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const origin = searchParams.get("origin");
+  const { isLoading, user } = useKindeBrowserClient();
+
+  if (!isLoading && !user) {
+    redirect("/api/auth/login");
+  }
 
   trpc.authCallback.useQuery(undefined, {
     onSuccess: ({ success }) => {
@@ -18,9 +24,10 @@ const AuthCallback = () => {
     },
 
     onError: (err) => {
-      console.log("ERROR:", err);
+      // console.log("ERROR:", err);
       if (err.data?.code == "UNAUTHORIZED") {
-        router.push("/sign-in");
+        // router.push("/sign-in");
+        redirect("/api/auth/login");
       }
     },
     retry: true,
