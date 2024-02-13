@@ -23,12 +23,12 @@ const Home = async () => {
       </p>
       <Button asChild className='mt-5' size={"lg"}>
         {user ? (
-          <Link href={"/dashboard"} target='_blank' className='font-semibold'>
+          <Link href={"/dashboard"} className='font-semibold'>
             Dashboard
             <MoveRight className='ml-2' />
           </Link>
         ) : (
-          <Link href={"/sign-in"} target='_blank' className='font-semibold'>
+          <Link href={"/sign-in"} className='font-semibold'>
             Get Started
             <MoveRight className='ml-2' />
           </Link>

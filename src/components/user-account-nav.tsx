@@ -1,3 +1,4 @@
+"use client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Gem, User2 } from "lucide-react";
 import { SignOutButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 interface UserAccountNavProps {
   email: string | undefined;
@@ -23,6 +25,7 @@ const UserAccountNav = async ({
   imageUrl,
   name,
 }: UserAccountNavProps) => {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className='overflow-visible'>
@@ -70,7 +73,7 @@ const UserAccountNav = async ({
         <DropdownMenuSeparator />
 
         <DropdownMenuItem className='cursor-pointer'>
-          <SignOutButton>
+          <SignOutButton signOutCallback={() => router.push("/")}>
             <button>Logout</button>
           </SignOutButton>
         </DropdownMenuItem>
