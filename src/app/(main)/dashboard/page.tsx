@@ -1,8 +1,10 @@
 import db from "@/lib/db";
-import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { currentUser } from "@clerk/nextjs";
+import Dashboard from "./_components/dashboard";
+import MaxWidthWrapper from "@/components/max-width-wrapper";
 
-const Dashboard = async () => {
+const DashboardPage = async () => {
   const user = await currentUser();
 
   if (!user || !user.id) redirect("/auth-callback?origin=dashboard");
@@ -15,7 +17,11 @@ const Dashboard = async () => {
 
   if (!data) redirect("/auth-callback?origin=dashboard");
 
-  return <div>Dashboard</div>;
+  return (
+    <MaxWidthWrapper>
+      <Dashboard />
+    </MaxWidthWrapper>
+  );
 };
 
-export default Dashboard;
+export default DashboardPage;

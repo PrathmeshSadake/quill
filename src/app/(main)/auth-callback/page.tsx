@@ -13,7 +13,6 @@ const AuthCallback = () => {
   const { mutate } = useMutation({
     mutationFn: async () => {
       const data = await axios.post("/api/user");
-      console.log(data);
     },
     onSuccess: () => {
       router.push(origin ? `/${origin}` : "/dashboard");
