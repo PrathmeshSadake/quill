@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Navbar from "@/components/navbar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -24,6 +25,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang='en'>
         <body className={cn("min-h-screen antialiased", poppins.className)}>
+          <Navbar />
           {children}
         </body>
       </html>
