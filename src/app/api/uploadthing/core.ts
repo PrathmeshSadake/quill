@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs";
 import { UploadThingError } from "uploadthing/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
+import db from "@/lib/db";
 
 const f = createUploadthing();
 
@@ -13,9 +14,17 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Upload complete for userId:", metadata.userId);
-      console.log("file url", file.url);
-      return { uploadedBy: metadata.userId };
+      const createdFile = await db.file.create({
+        data: {
+          key: file.key,
+          name: file.name,
+          userId: metadata.userId,
+          url: file.url,
+          // url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+          uploadStatus: "PROCESSING",
+        },
+      });
+      console.log(createdFile);
     }),
 } satisfies FileRouter;
 

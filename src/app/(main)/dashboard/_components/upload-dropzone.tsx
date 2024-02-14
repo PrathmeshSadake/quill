@@ -6,13 +6,30 @@ import { Progress } from "@/components/ui/progress";
 import { useUploadThing } from "@/lib/uploadthing";
 import { generateClientDropzoneAccept } from "uploadthing/client";
 import { useToast } from "@/components/ui/use-toast";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const UploadDropzone = () => {
+  const router = useRouter();
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState<boolean>(true);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
 
   const { startUpload } = useUploadThing("pdfUploader");
+
+  const { mutate: startPolling } = useMutation({
+    mutationFn: async (key: string) => {
+      const res = await axios.post(`/api/files`, { key });
+      return res.data;
+    },
+    onSuccess: (file) => {
+      console.log("FILE", file);
+      router.push(`/dashboard/${file.id}`);
+    },
+    retry: true,
+    retryDelay: 500,
+  });
 
   // Determinate progress bar
   const startSimulatedProgress = () => {
@@ -48,6 +65,7 @@ const UploadDropzone = () => {
         }
 
         const [fileResponse] = res!;
+        console.log("FILE RESPONSE", fileResponse);
         const key = fileResponse?.key;
         if (!key) {
           return toast({
@@ -58,6 +76,7 @@ const UploadDropzone = () => {
         }
         clearInterval(progessInterval);
         setUploadProgress(100);
+        startPolling(key);
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (

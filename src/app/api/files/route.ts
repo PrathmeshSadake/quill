@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs";
 import db from "@/lib/db";
 
-export async function GET() {
+export async function GET(req: Request, res: Response) {
   try {
     const user = await currentUser();
     if (!user || !user.id) {
@@ -62,6 +62,40 @@ export async function DELETE(req: Request, res: Response) {
     });
 
     return new NextResponse("OK", { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
+}
+
+export async function POST(req: Request, res: Response) {
+  try {
+    const user = await currentUser();
+    if (!user || !user.id) {
+      throw new Error("Unauthorized", {
+        cause: 403,
+      });
+    }
+
+    const body = await req.json();
+    const { key } = body;
+
+    if (key) {
+      const file = await db.file.findFirst({
+        where: {
+          key,
+          userId: user.id,
+        },
+      });
+
+      if (!file) {
+        throw new Error("Not Found", {
+          cause: 404,
+        });
+      }
+
+      return NextResponse.json(file);
+    }
   } catch (error) {
     console.log(error);
     return new NextResponse("Internal Server Error", { status: 500 });
