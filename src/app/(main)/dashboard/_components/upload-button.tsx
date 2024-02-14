@@ -4,6 +4,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Upload } from "lucide-react";
 import React, { useState } from "react";
+import UploadDropzone from "./upload-dropzone";
 
 const UploadButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -17,15 +18,11 @@ const UploadButton = () => {
       <DialogTrigger asChild onClick={() => setIsOpen(true)}>
         <Button>
           Upload PDF
-          <Upload className='w-4 h-4 ml-2'/>
+          <Upload className='w-4 h-4 ml-2' />
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <div className='flex flex-col gap-4'>
-          <h1 className='text-2xl font-semibold'>Upload PDF</h1>
-          <input type='file' />
-          <Button onClick={() => setIsOpen(false)}>Upload</Button>
-        </div>
+        <UploadDropzone />
       </DialogContent>
     </Dialog>
   );
