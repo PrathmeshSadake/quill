@@ -8,6 +8,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar";
 import Providers from "@/components/providers";
+import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
           <body className={cn("min-h-screen antialiased", poppins.className)}>
             <Navbar />
             {children}
+            <Toaster />
           </body>
         </Providers>
       </html>

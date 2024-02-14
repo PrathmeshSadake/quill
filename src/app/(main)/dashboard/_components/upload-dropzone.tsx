@@ -5,8 +5,10 @@ import { Cloud, File } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useUploadThing } from "@/lib/uploadthing";
 import { generateClientDropzoneAccept } from "uploadthing/client";
+import { useToast } from "@/components/ui/use-toast";
 
 const UploadDropzone = () => {
+  const { toast } = useToast();
   const [isUploading, setIsUploading] = useState<boolean>(true);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
 
@@ -38,13 +40,21 @@ const UploadDropzone = () => {
         // Upload file
         const res = await startUpload(acceptedFiles);
         if (!res) {
-          console.log("Error uploading file");
+          return toast({
+            title: "Something went wrong",
+            description: "Please try again later",
+            variant: "destructive",
+          });
         }
 
         const [fileResponse] = res!;
         const key = fileResponse?.key;
         if (!key) {
-          console.log("Error uploading file");
+          return toast({
+            title: "Something went wrong",
+            description: "Please try again later",
+            variant: "destructive",
+          });
         }
         clearInterval(progessInterval);
         setUploadProgress(100);
