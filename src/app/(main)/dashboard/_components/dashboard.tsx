@@ -1,14 +1,23 @@
 "use client";
 import axios from "axios";
-import { Ghost, Loader2, MessageSquare, Plus, Trash } from "lucide-react";
-import Skeleton from "react-loading-skeleton";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
-import UploadButton from "./upload-button";
-import { File } from "@prisma/client";
 import Link from "next/link";
 import { useState } from "react";
+import { format } from "date-fns";
+import Skeleton from "react-loading-skeleton";
+import {
+  FileText,
+  Ghost,
+  Loader2,
+  MessageSquare,
+  Plus,
+  Trash,
+} from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { File } from "@prisma/client";
+import UploadButton from "./upload-button";
 import { Button } from "@/components/ui/button";
+import { extractNameFromFilename } from "@/lib/utils";
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
@@ -64,12 +73,13 @@ const Dashboard = () => {
                     href={`/dashboard/${file.id}`}
                     className='flex flex-col gap-2'
                   >
-                    <div className='pt-6 px-6 flex w-full items-center justify-between space-x-6'>
-                      <div className='h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500' />
+                    <div className='pt-4 px-6 flex w-full items-center justify-between space-x-4'>
+                      <FileText className='h-8 w-8 text-black' />
+
                       <div className='flex-1 truncate'>
                         <div className='flex items-center space-x-3'>
                           <h3 className='truncate text-lg font-medium text-zinc-900'>
-                            {file.name}
+                            {extractNameFromFilename(file.name)}
                           </h3>
                         </div>
                       </div>
@@ -83,7 +93,6 @@ const Dashboard = () => {
 
                     <div className='flex items-center gap-2'>
                       <MessageSquare className='h-4 w-4' />
-                      mocked
                     </div>
 
                     <Button
