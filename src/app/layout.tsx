@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "simplebar-react/dist/simplebar.min.css";
 
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar";
